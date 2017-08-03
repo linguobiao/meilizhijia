@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <title>网络异常</title>
+    <style type="text/css">
+        * {
+        margin: 0;
+        padding: 0;
+        }
+        body {
+        background-color: #fff;
+        color: #34495e;
+        font-family: "Source Sans Pro","Helvetica Neue",Arial,sans-serif;
+        font-size: 15px;
+        margin: 0;
+        }
+
+        .error-page {
+        text-align: center;
+        color: #808081;
+        padding-top: 150px;
+        }
+
+        .error-page > div {
+        margin-bottom: 17px;
+        }
+
+        .error-page .btn {
+        background: #3399ff;
+        padding: 6px 12px;
+        color: #fff;
+        border-radius: 5px;
+        display: inline-block;
+        font-size: 14px;
+        text-decoration: none;
+        }
+
+        .loading-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url(images/loading1.png) no-repeat;
+        background-size: 20px 20px;
+        vertical-align: middle;
+        margin-right: 4px;
+        }
+
+        .background {
+        display: block;
+        width: 100%;
+        height: 100%;
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        background-color: white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2000;
+        }
+
+        .progressBar {
+        border: solid 1px #86A5AD;
+        background: white url(images/loading2.png) no-repeat 10px 10px;
+        }
+
+        .progressBar {
+        display: block;
+        width: 150px;
+        height: 28px;
+        position: fixed;
+        top: 36%;
+        left: 43%;
+        margin-left: -74px;
+        margin-top: -14px;
+        padding: 10px 10px 10px 50px;
+        text-align: left;
+        line-height: 27px;
+        font-weight: bold;
+        position: absolute;
+        z-index: 2001;
+        }
+    </style>
+    <script type="text/javascript">
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+
+        function goagain() {
+
+            var ajaxbg = $("#background,#progressBar");
+            ajaxbg.show();
+
+            var str = GetQueryString("url");
+            window.location.href = str;
+            // ajaxbg.hide();
+        }
+    </script>
+</head>
+<body>
+<div class="error-page">
+    <div><img src="images/40401.png" width="100" /></div>
+    <div>网络连接出错了！请检查网络设置</div>
+    <div><a onclick="goagain()" class="btn"><span class="loading-icon"></span>重新加载</a></div>
+</div>
+<div id="background" class="background" style="display:none"></div>
+<div id="progressBar" class="progressBar" style="display:none">数据加载中，请稍等...</div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="new_circle_progress" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <!--是否有标题 -->
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <dimen name="app_wxtst">17dp</dimen>
+</resources>

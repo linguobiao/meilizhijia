@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">魅力之家</string>
+    <string name="pay_body">魅力之家-购物消费</string>
+    <string name="key_jpush">4986127a617f28009916cb31</string>
+    <string name="key_tencent_id">tencent1106070237</string>
+
+    <string name="share">分享</string>
+    <string name="wechatload">微信登陆</string>
+    <string name="userload">账号登陆</string>
+    <string name="share2friend">分享给朋友</string>
+    <string name="share2circle">分享到朋友圈</string>
+    <string name="share2qq">分享到QQ</string>
+    <string name="share2qqkj">分享到QQ空间</string>
+    <string name="share2wb">分享到微博</string>
+    <string name="my_message">我的消息</string>
+    <string name="back">退出登录</string>
+
+    <string name="pay_now">立即支付</string>
+    <string name="pay_ing">支付中</string>
+    <string name="pay_fail">支付失败</string>
+    <string name="pay_success">支付成功</string>
+
+    <string name="share_ok">分享成功</string>
+    <string name="share_fail">分享失败</string>
+
+    <string name="url_loading">加载中</string>
+    <string name="get_message_fail">登陆失败，请检查网络连接</string>
+
+    <string name="Dialog_No_Weibo">没有安装微博</string>
+    <string name="Dialog_No_QQ_zone">没有安装QQ空间</string>
+    <string name="Dialog_No_QQ">没有安装QQ</string>
+    <string name="Dialog_No_wechat">没有安装微信</string>
+
+    <string name="loading_time_out">登录超时</string>
+
+    <string name="msg_back">返回</string>
+    <string name="msg_close">关闭</string>
+    <string name="msg_left">&#060;</string>
+    <string name="msg_right">&#062;</string>
+    <string name="wxtip">温馨提示</string>
+    <string name="wxtip1">①需与微信账号绑定,请使用[微信授权登录]</string>
+    <string name="wxtip2">②账号密码需要与微信绑定,请到微信公众号[个人中心]-[绑定账号]-[完善信息绑定] 再回到app 使用账号密码登录</string>
+
+    <dimen name="wextipsiz">15dp</dimen>
+</resources>

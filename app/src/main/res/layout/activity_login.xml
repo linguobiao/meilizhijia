@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white">
+    <RelativeLayout
+            android:id="@+id/title_rl"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/background_dark">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@android:color/background_light"
+                android:textSize="18dp"
+                android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+        android:id="@+id/linearLayout">
+
+        <TextView
+                android:id="@+id/load_tv_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_above="@+id/load_tv"
+                android:background="@drawable/userload"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wxtip"
+        android:id="@+id/wxtip"
+        android:layout_marginTop="26dp"
+        android:textSize="@dimen/app_wxtst"
+        android:textColor="#4A6147"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wxtip1"
+        android:id="@+id/textView"
+        android:layout_below="@+id/wxtip"
+        android:layout_alignLeft="@+id/wxtip"
+        android:layout_alignStart="@+id/wxtip"
+        android:textSize="@dimen/wextipsiz"
+        android:textColor="#4A6147" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wxtip2"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:textSize="@dimen/wextipsiz"
+        android:textColor="#4A6147"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout" />
+
+    <TextView
+            android:id="@+id/load_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:background="@drawable/wechatload"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout" />
+
+</RelativeLayout>
