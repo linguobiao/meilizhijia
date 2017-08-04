@@ -60,6 +60,24 @@
         android:layout_below="@+id/title_rl">
     </com.tencent.smtt.sdk.WebView>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/activity_news_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:layout_below="@+id/title_rl"
+        android:layout_marginBottom="70dp">
+
+        <ProgressBar
+            android:progressBackgroundTint="@android:color/transparent"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:id="@+id/progressBar"/>
+
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progress_webView"
         style="?android:attr/progressBarStyleHorizontal"

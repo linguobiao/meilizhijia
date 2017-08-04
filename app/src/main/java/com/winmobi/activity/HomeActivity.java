@@ -33,6 +33,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback;
 
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.PermissionRequest;
@@ -67,6 +68,12 @@ import com.winmobi.adapter.MsgListAdapter;
 import com.winmobi.bean.JPush;
 import com.winmobi.comm.AndroidBug5497Workaround;
 import com.winmobi.db.DatabaseProvider;
+import com.winmobi.giiso.GiisoManager;
+import com.winmobi.giiso.GiisoWebView;
+import com.winmobi.giiso.News;
+import com.winmobi.giiso.NewsJavascriptInterface;
+import com.winmobi.giiso.PictureBean;
+import com.winmobi.giiso.PictureViewActivity;
 import com.winmobi.global.Global;
 import com.winmobi.helper.CalendarHelper;
 import com.winmobi.helper.GetIpAdress;
@@ -149,6 +156,11 @@ public class HomeActivity extends Activity implements View.OnClickListener{
     //检测网络连接状态
     private ConnectivityManager manager;
 
+    //Giiso
+    private GiisoWebView mWebView;
+    private LinearLayout mContentView;
+    private ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,14 +182,8 @@ public class HomeActivity extends Activity implements View.OnClickListener{
             initBroadCast();
             initMsg();
         }else{
-
             main_vb.loadUrl("file:///android_asset/Not_NetworkInfo.html");
         }
-
-
-
-
-
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
@@ -189,33 +195,50 @@ public class HomeActivity extends Activity implements View.OnClickListener{
             );
         }
 
-/*
-        WebChromeClient wvcc = new WebChromeClient() {
+        //giiso
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mWebView = new GiisoWebView(this);
+        mContentView = (LinearLayout) findViewById(R.id.activity_news_list);
+        mWebView = new GiisoWebView(this);
+        //页面容器动态添加webview
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams
+                (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mWebView.setLayoutParams(layoutParams);
+        mContentView.addView(mWebView);
+        mWebView.setWebViewClient(new android.webkit.WebViewClient());
+        mWebView.setWebChromeClient(new android.webkit.WebChromeClient(){
             @Override
-            public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
-                txt_title.setText(title);
+            public void onProgressChanged(android.webkit.WebView view, int newProgress){
+                if (newProgress != 100){
+                    mProgressBar.setProgress(newProgress);
+                }else{
+                    mProgressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        //必须设置，h5的新闻列表中当点击单篇新闻跳转到新闻详情页时，需要js端调用java代码进行跳转、传参
+        mWebView.addJavascriptInterface(NewsJavascriptInterface.with(this, new NewsJavascriptInterface.OnJsListener() {
+            @Override
+            public void onNewsDetail(final News news) {
+                mWebView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWebView.loadUrl(news.getDetailUrl());
+//                        webView.loadUrl("javascript: alert(" + data +")");
+                    }
+                });
             }
 
-        };
-        // 设置setWebChromeClient对象
-        main_vb.setWebChromeClient(wvcc);
-
-        // 创建WebViewClient对象
-        WebViewClient wvc = new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // 使用自己的WebView组件来响应Url加载事件，而不是使用默认浏览器器加载页面
-                main_vb.loadUrl(url);
-                // 消耗掉这个事件。Android中返回True的即到此为止吧,事件就会不会冒泡传递了，我们称之为消耗掉
-                return true;
+            public void onOpenPicture(PictureBean bean) {
+                PictureViewActivity.startActivity(HomeActivity.this, bean);
             }
-        };
-        main_vb.setWebViewClient(wvc);
-*/
-
-
-
+        }),NewsJavascriptInterface.NAME);
+        mContentView.setVisibility(View.GONE);
+        GiisoManager.getInstance().initSDK(this, new GiisoManager.OnInitGiisoListener() {
+            @Override public void onSuccess(String webUrl) {}
+        });
     }
 
     @Override
@@ -453,6 +476,8 @@ public class HomeActivity extends Activity implements View.OnClickListener{
         }
     };
 
+    private boolean isLoadGiiso = false;
+
     private WebViewClient webViewClient=new WebViewClient(){
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -476,8 +501,17 @@ public class HomeActivity extends Activity implements View.OnClickListener{
                     LogHelper.d(Global.TAG, "网页信息，包含订单号，url = " + url, Global.NAME_LOG);
                     pay.setVisibility(View.VISIBLE);
                     payUrl = url;
+                    mContentView.setVisibility(View.GONE);
+                } else if (url.contains("/ArticleList.aspx")) {
+                    mContentView.setVisibility(View.VISIBLE);
+                    if (!isLoadGiiso) {
+                        mWebView.loadUrl(GiisoManager.getInstance().getUrl());
+                    }
+                    isLoadGiiso = true;
+                    pay.setVisibility(View.GONE);
                 } else {
                     pay.setVisibility(View.GONE);
+                    mContentView.setVisibility(View.GONE);
                 }
             view.loadUrl("javascript:window.java_obj.getSource('<head>'+" +
                     "document.getElementsByTagName('html')[0].innerHTML+'</head>');");
@@ -533,7 +567,18 @@ public class HomeActivity extends Activity implements View.OnClickListener{
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (lv_msg.getVisibility() == View.VISIBLE) {
+            if (mContentView.getVisibility() == View.VISIBLE) {
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack();
+                } else {
+                    mContentView.setVisibility(View.GONE);
+                    if (main_vb.canGoBack()) {
+                        main_vb.goBack();// ����ǰһ��ҳ��
+                    }
+                }
+                return true;
+            }
+            else if (lv_msg.getVisibility() == View.VISIBLE) {
                 showMsg(false);
                 return true;
             } else {

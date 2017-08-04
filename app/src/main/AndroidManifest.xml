@@ -174,6 +174,27 @@
         <!-- Required. AppKey copied from Portal -->
         <meta-data android:name="JPUSH_APPKEY" android:value="@string/key_jpush"/>
 
+        <!-- GiisoSdk配置开始 -->
+        <meta-data
+            android:name="GIISO_APP_ID"
+            android:value="20123"/>
+        //10030更换为您从我方开发平台上注册获取到的AppId，必须配置
+        <meta-data
+            android:name="GIISO_APP_SECRET"
+            android:value="4a04b0a7-68f1-4e3c-968c-c9d7957780e3"/>
+        //更换为您从我方开发平台上注册到的AppSecret，必须配置
+        <meta-data
+            android:name="GIISO_PUSH_KEY"
+            android:value="106939838"/>
+        //106939838更换为我方提供的key,若不希望接入推送功能可以不配该项
+        <!-- 图片浏览页 -->
+        <activity
+            android:name=".giiso.PictureViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="图片新闻"
+            android:screenOrientation="portrait"/>
+        <!-- GiisoSdk配置结束 -->
+
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>

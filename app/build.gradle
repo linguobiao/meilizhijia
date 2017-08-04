@@ -1,14 +1,27 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     signingConfigs {
-        config {
-            keyAlias 'zp'
-            keyPassword 'zp654321'
-            storeFile file('D:/APP/zp.jks')
-            storePassword 'zp654321'
+
+        debug {
+            keyAlias keystoreProperties['debugKeyAlias']
+            keyPassword keystoreProperties['debugKeyPassword']
+            storeFile file(keystoreProperties['debugStoreFile'])
+            storePassword keystoreProperties['debugStorePassword']
         }
+        relealse {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+
     }
+
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     useLibrary "org.apache.http.legacy"
@@ -18,15 +31,27 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName '1.0.1'
-        signingConfig signingConfigs.config
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+
     productFlavors {
+    }
+
+    buildTypes {
+        debug {
+            versionNameSuffix "-debug"
+            minifyEnabled false
+//            signingConfig signingConfigs.debug
+        }
+        release {
+            // 是否进行混淆
+            minifyEnabled false
+            // 去除无用的resource文件
+//            shrinkResources true
+            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //签名
+            signingConfig signingConfigs.relealse
+        }
     }
 }
 
@@ -41,4 +66,12 @@ dependencies {
     compile files('libs/Bughd_android_sdk_v1.3.7.jar')
     compile files('libs/Bughd_android_sdk_v1.3.7.jar')
     compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
+    compile files('libs/giisosdk.jar')
+    compile 'org.litepal.android:core:1.5.0'
+    compile files('libs/fastjson-1.2.5.jar')
+    compile project(':photodraweeview')
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.facebook.fresco:fresco:0.11.0'
+    compile 'com.facebook.fresco:animated-gif:0.11.0'
+    compile 'com.android.support:design:23.4.0'
 }

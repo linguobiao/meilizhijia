@@ -43,4 +43,8 @@
     <string name="wxtip2">②账号密码需要与微信绑定,请到微信公众号[个人中心]-[绑定账号]-[完善信息绑定] 再回到app 使用账号密码登录</string>
 
     <dimen name="wextipsiz">15dp</dimen>
+
+    <string name="download_image_error">保存失败</string>
+    <string name="download_image_success">保存成功</string>
+    <string name="save_image">保存图片</string>
 </resources>
